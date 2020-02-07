@@ -1,4 +1,4 @@
-function Get-SWServiceGroup {
+﻿function Get-SWLoadBalanceGroup {
     <#
     .SYNOPSIS
     Retrieve Service Groups from SonicWall appliance.
@@ -30,7 +30,7 @@ function Get-SWServiceGroup {
         $Method = 'get'
 
         # Declaring the base resource
-        $BaseResource = 'service-groups'
+        $BaseResource = 'failover-lb'
 
         # Declaring the content type
         $ContentType = 'application/json'
@@ -41,13 +41,13 @@ function Get-SWServiceGroup {
     process {
         # If a $Name exists limit the search to it
         if ($Name) {
-            $Resource = "$BaseResource/name/$Name"
-            $Result = (Invoke-RestMethod -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).service_group
+            $Resource = "$BaseResource/groups/name/$Name"
+            $Result = (Invoke-RestMethod -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).LB_group
         }
         # If there are no parameters query for all service groups
         else {
             $Resource = $BaseResource
-            $Result = (Invoke-RestMethod -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).service_groups
+            $Result = (Invoke-RestMethod -Uri "$SWBaseUrl$Resource" -Method $Method -ContentType $ContentType).LB_groups
         }
         # Return the result
         $Result
